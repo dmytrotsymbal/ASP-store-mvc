@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@* @model Tables.Models.Entities.Client - так просто бы подключили модель но нам нужен список клиентов *@
+
+@model List<Tables.Models.Entities.Client>
+
+
+<br />
+<h2>List of clients</h2>
+<hr />
+
+<a class="btn btn-primary btn-md" href="/Clients/Add">Add new client</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Created at</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model) @* модель сама по себе в данном случаи являеться списком  *@
+        {
+            <tr>
+                <td>@client.Id</td>
+                <td>@client.Name</td>
+                <td>@client.Email</td>
+                <td>@client.Phone</td>
+                <td>@client.Address</td>
+                <td>@client.CreatedAt</td>
+                <td>
+                    <div style="display: flex; align-items: center; flex-direction: row; justify-content: space-between;">
+                        <a class="btn btn-warning btn-sm" asp-controller="Clients" asp-action="Edit" asp-route-id="@client.Id">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="/Clients/Delete?id=@client.Id">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
