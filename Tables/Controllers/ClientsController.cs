@@ -15,19 +15,21 @@ namespace Tables.Controllers
             this.dbContext = dbContext; // Сохраняет предоставленный контекст базы данных в переменную экземпляра.
         }
 
+        //CREATE A NEW CLIENT FUNCTION============================================================================
+
         [HttpGet] // Метод для отображения формы добавления клиента.
                   // [HttpGet] указывает на то, что он обрабатывает GET-запросы.
         public IActionResult Add() // Возвращает представление для добавления нового клиента.
+                                   // Возвращает представление Add.cshtml
         {
             return View(); // метод View() для отображения представления
         }
 
 
-        //CREATE A NEW CLIENT FUNCTION============================================================================
-
         [HttpPost] // Метод для отправки формы и добавления клиента.
                    // [HttpPost] указывает на то, что он обрабатывает POST-запросы.
-        public async Task<IActionResult> Add(AddClientViewModel viewModel) // Принимает модель представления с данными формы. То есть наш ViewModel
+        public async Task<IActionResult> Add(AddClientViewModel viewModel) // Принимает модель представления с данными формы.
+                                                                           // То есть наш ViewModel
         {
             var client = new Client // Создает новый экземпляр клиента с данными из модели представления. ViewModel
             {
@@ -52,7 +54,7 @@ namespace Tables.Controllers
         [HttpGet]
         public async Task<IActionResult> List() // Метод для отображения списка клиентов.
         {
-           var client = await dbContext.Clients.ToListAsync(); // Загружает список всех клиентов из базы данных.
+            var client = await dbContext.Clients.ToListAsync(); // Загружает список всех клиентов из базы данных.
 
             return View(client); // Возвращает представление со списком клиентов.
         }
@@ -89,7 +91,6 @@ namespace Tables.Controllers
 
 
         //DELETE FUNCTION============================================================================
-
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id) // Метод для удаления клиента.
         {
@@ -103,5 +104,51 @@ namespace Tables.Controllers
 
             return RedirectToAction("List"); // Возвращает представление со списком клиентов.
         }
+
+
+        //SEARCH FUNCTION============================================================================
+
+        [HttpGet]
+        public IActionResult Search() // Метод для отображения формы поиска.
+        {
+            return View(new SearchClientViewModel());  // ViewModel с пустым списком результатов,
+                                                       // чтобы избежать ошибок в представлении
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Search(SearchClientViewModel searchModel) // Метод для поиска клиента.
+        {
+            var query = dbContext.Clients.AsQueryable(); // Загружает список всех клиентов из базы данных.
+
+            if (searchModel.Id != Guid.Empty) // Если Id не пустой
+            {
+                query = query.Where(x => x.Id == searchModel.Id); // Фильтрует список клиентов по Id.
+            }
+
+            if (!string.IsNullOrEmpty(searchModel.Name)) // Если имя не пустое
+            {
+                query = query.Where(x => x.Name.Contains(searchModel.Name)); // Фильтрует список клиентов по имени.
+            }
+
+            if (!string.IsNullOrEmpty(searchModel.Email)) // Если почта не пустая 
+            {
+                query = query.Where(x => x.Email.Contains(searchModel.Email)); // Фильтрует список клиентов по почте.
+            }
+
+            if (!string.IsNullOrEmpty(searchModel.Phone)) // Если телефон не пустой 
+            {
+                query = query.Where(x => x.Phone.Contains(searchModel.Phone)); // Фильтрует список клиентов по телефону.
+            }
+
+            if (!string.IsNullOrEmpty(searchModel.Address)) // Если адрес не пустой
+            {
+                query = query.Where(x => x.Address.Contains(searchModel.Address)); // Фильтрует список клиентов по адресу.
+            }
+           
+            searchModel.SearchResults = await query.ToListAsync();  // Загрузка и сохранение результатов поиска в ViewModel
+
+            return View(searchModel); // Возвращение обновленной ViewModel в вид
+        } 
     }
 }
