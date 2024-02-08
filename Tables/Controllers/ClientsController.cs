@@ -40,10 +40,10 @@ namespace Tables.Controllers
             await dbContext.Clients.AddAsync(client); // Добавляет нового клиента в контекст базы данных для последующего сохранения.
             await dbContext.SaveChangesAsync(); // Асинхронно сохраняет изменения в базе данных.
 
+
             return View(); // Возвращает представление после добавления клиента.
                            // Можно изменить на редирект, если требуется перенаправление после добавления.
         }
-
 
 
         //LIST FUNCTION============================================================================
@@ -83,6 +83,23 @@ namespace Tables.Controllers
             }
 
             return RedirectToAction("List", "Clients"); // Возвращает представление со списком клиентов.
-        } 
+        }
+
+
+        //DELETE FUNCTION============================================================================
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id) // Метод для удаления клиента.
+        {
+            var client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == id); // Загружает клиента с указанным идентификатором из базы данных.
+
+            if (client != null) // Если клиент существует
+            { 
+                dbContext.Clients.Remove(client); // Удаляет клиента из базы данных.
+                await dbContext.SaveChangesAsync(); // Сохраняет изменения в базе данных.
+            }
+
+            return RedirectToAction("List"); // Возвращает представление со списком клиентов.
+        }
     }
 }

@@ -40,7 +40,10 @@
                 <td>
                     <div style="display: flex; align-items: center; flex-direction: row; justify-content: space-between;">
                         <a class="btn btn-warning btn-sm" asp-controller="Clients" asp-action="Edit" asp-route-id="@client.Id">Edit</a>
-                        <a class="btn btn-danger btn-sm" href="/Clients/Delete?id=@client.Id">Delete</a>
+                        <form asp-controller="Clients" asp-action="Delete" method="post" style="margin: 0;">
+                            <input type="hidden" name="Id" value="@client.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
                     </div>
                 </td>
             </tr>
