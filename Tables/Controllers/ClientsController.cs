@@ -34,15 +34,17 @@ namespace Tables.Controllers
                 Name = viewModel.Name,
                 Email = viewModel.Email,
                 Phone = viewModel.Phone,
-                Address = viewModel.Address
+                Address = viewModel.Address,
+                CreatedAt = DateTime.Now
             };
 
             await dbContext.Clients.AddAsync(client); // Добавляет нового клиента в контекст базы данных для последующего сохранения.
             await dbContext.SaveChangesAsync(); // Асинхронно сохраняет изменения в базе данных.
 
+            return RedirectToAction("List");
 
-            return View(); // Возвращает представление после добавления клиента.
-                           // Можно изменить на редирект, если требуется перенаправление после добавления.
+            // return View(); // Возвращает представление после добавления клиента.
+            // Можно изменить на редирект, если требуется перенаправление после добавления.
         }
 
 
