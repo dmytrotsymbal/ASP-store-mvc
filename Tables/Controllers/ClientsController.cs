@@ -155,7 +155,6 @@ namespace Tables.Controllers
         //CLIENTS DETAILS PAGE FUNCTION============================================================================
 
         [HttpGet]
-
         public async Task<IActionResult> Details(Guid id) // Метод для отображения деталей клиента.
         {
             var client = await dbContext.Clients 
@@ -176,7 +175,41 @@ namespace Tables.Controllers
             return View(viewModel);
         }
 
+        // CREATE CAR FUNCTION============================================================================
+
+        [HttpGet]
+        public IActionResult AddCar(Guid clientId) // Принимает clientId из URL
+        {
+            var carViewModel = new AddCarViewModel
+            {
+                ClientId = clientId // Устанавливает clientId в модели представления
+            };
+            return View(carViewModel);
+        }
 
 
+
+        [HttpPost] // Метод для отправки формы и добавления клиента.
+                   // [HttpPost] указывает на то, что он обрабатывает POST-запросы.
+        public async Task<IActionResult> AddCar(AddCarViewModel carViewModel) // Принимает модель представления с данными формы.
+                                                                           // То есть наш ViewModel
+        {
+            var car = new Car // Создает новый экземпляр клиента с данными из модели представления. ViewModel
+            {
+                ClientId = carViewModel.ClientId,
+                Brand = carViewModel.Brand,
+                Color = carViewModel.Color,
+                Year = carViewModel.Year,
+                Price = carViewModel.Price,
+            };
+
+            await dbContext.Cars.AddAsync(car); // Добавляет нового клиента в контекст базы данных для последующего сохранения.
+            await dbContext.SaveChangesAsync(); // Асинхронно сохраняет изменения в базе данных.
+
+            return RedirectToAction("Details", new { id = carViewModel.ClientId });
+
+            // return View(); // Возвращает представление после добавления клиента.
+            // Можно изменить на редирект, если требуется перенаправление после добавления.
+        }
     }
 }

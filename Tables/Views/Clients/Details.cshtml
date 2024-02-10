@@ -8,15 +8,18 @@
 
 <a class="btn btn-primary btn-md" href="/Clients/List">To list</a>
 
-<!-- Информация о клиенте -->
+<p>PersonalID: @Model.Client.Id</p>
 <p>Name: @Model.Client.Name</p>
 <p>Email: @Model.Client.Email</p>
 <p>Phone: @Model.Client.Phone</p>
 <p>Address: @Model.Client.Address</p>
+<p>Created at: @Model.Client.CreatedAt</p>
 
 <hr />
 
-<h3>Cars:</h3>
+<a class="btn btn-primary" asp-controller="Clients" asp-action="AddCar" asp-route-clientId="@Model.Client.Id">Add new car</a>
+
+<h3>@Model.Client.Name`s cars:</h3>
 <table class="table">
     <thead>
         <tr>
