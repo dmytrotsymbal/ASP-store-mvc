@@ -15,6 +15,7 @@ namespace Tables.Controllers
             this.dbContext = dbContext; // Сохраняет предоставленный контекст базы данных в переменную экземпляра.
         }
 
+
         //CREATE A NEW CLIENT FUNCTION============================================================================
 
         [HttpGet] // Метод для отображения формы добавления клиента.
@@ -149,6 +150,33 @@ namespace Tables.Controllers
             searchModel.SearchResults = await query.ToListAsync();  // Загрузка и сохранение результатов поиска в ViewModel
 
             return View(searchModel); // Возвращение обновленной ViewModel в вид
-        } 
+        }
+
+        //CLIENTS DETAILS PAGE FUNCTION============================================================================
+
+        [HttpGet]
+
+        public async Task<IActionResult> Details(Guid id) // Метод для отображения деталей клиента.
+        {
+            var client = await dbContext.Clients 
+                .Include(c => c.Cars) // Предполагается, что у вас есть навигационное свойство Cars в модели Client
+                .FirstOrDefaultAsync(c => c.Id == id); // Загружает клиента с указанным идентификатором из базы данных.
+
+            if (client == null) // Если клиент не существует
+            {
+                return NotFound(); // Возвращает ошибку 404
+            }
+
+            var viewModel = new ClientDetailsViewModel 
+            {
+                Client = client,
+                Cars = client.Cars.ToList() // Предполагается, что Cars - это коллекция в Client
+            };
+
+            return View(viewModel);
+        }
+
+
+
     }
 }

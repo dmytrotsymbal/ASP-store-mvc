@@ -32,7 +32,7 @@
         {
             <tr>
                 <td>@client.Id</td>
-                <td>@client.Name</td>
+                <td>@Html.ActionLink(client.Name, "Details", "Clients", new { id = client.Id }, null)</td>
                 <td>@client.Email</td>
                 <td>@client.Phone</td>
                 <td>@client.Address</td>

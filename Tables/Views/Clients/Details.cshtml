@@ -1,0 +1,42 @@
+﻿
+
+@model ClientDetailsViewModel
+
+<br />
+<h2>@Model.Client.Name details</h2>
+<hr />
+
+<a class="btn btn-primary btn-md" href="/Clients/List">To list</a>
+
+<!-- Информация о клиенте -->
+<p>Name: @Model.Client.Name</p>
+<p>Email: @Model.Client.Email</p>
+<p>Phone: @Model.Client.Phone</p>
+<p>Address: @Model.Client.Address</p>
+
+<hr />
+
+<h3>Cars:</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Year</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model.Cars)
+        {
+            <tr>
+				<td>@car.Id</td>
+                <td>@car.Brand</td>
+                <td>@car.Color</td>
+                <td>@car.Year</td>
+                <td>@car.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>

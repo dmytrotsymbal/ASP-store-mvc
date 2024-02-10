@@ -8,10 +8,6 @@
         public string Phone { get; set; }
         public string Address { get; set; }
         public DateTime CreatedAt { get; set; }
-
-
-      //  public virtual ICollection<Car> Cars { get; set; } // Navigation property to represent the relationship
-                                                           // Это свойство навигации позволяет навигировать от клиента
-                                                           // к его автомобилям
+        public List<Car> Cars { get; set; }  // Коллекция автомобилей клиента
     }
 }

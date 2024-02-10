@@ -11,5 +11,7 @@ namespace Tables.Data
         }
 
         public DbSet<Client> Clients { get; set; } // создание таблицы клиентов
+
+        public DbSet<Car> Cars { get; set; } // создание таблицы автомобилей
     }
 }
